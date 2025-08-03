@@ -3,10 +3,13 @@ const fs = require("fs");
 const path = require("path");
 const config = require("./config");
 const logger = require("./utils/logger");
-const tebakCommand = require("./commands/tebak"); // Import tebak command untuk mengakses gameSession
+const CommandManager = require("./utils/commandManager");
 
 // Inisialisasi bot
 const bot = new Telegraf(config.botToken);
+
+// Inisialisasi Command Manager
+const commandManager = new CommandManager();
 
 // Inisialisasi file data jika belum ada
 const dataFiles = [
@@ -30,33 +33,18 @@ dataFiles.forEach((file) => {
     }
 });
 
-// Auto load command
-const commands = [];
-const loadCommands = (dir) => {
-    const files = fs.readdirSync(dir, { withFileTypes: true });
+// Load semua command
+commandManager.loadCommands(path.join(__dirname, "commands"));
 
-    for (const file of files) {
-        const fullPath = path.join(dir, file.name);
-        if (file.isDirectory()) {
-            loadCommands(fullPath);
-        } else if (file.isFile() && file.name.endsWith(".js")) {
-            const command = require(fullPath);
-            if (command.name && command.execute) {
-                commands.push(command);
-                logger.info(`Command loaded: ${command.name}`);
-
-                // Register command with Telegraf
-                if (command.middleware && Array.isArray(command.middleware)) {
-                    bot.command(command.name, ...command.middleware, command.execute);
-                } else {
-                    bot.command(command.name, command.execute);
-                }
-            }
-        }
+// Register commands dengan Telegraf
+for (const [name, command] of commandManager.getAllCommands()) {
+    if (command.middleware && Array.isArray(command.middleware)) {
+        bot.command(command.name, ...command.middleware, command.execute.bind(command));
+    } else {
+        bot.command(command.name, command.execute.bind(command));
     }
-};
-
-loadCommands(path.join(__dirname, "commands"));
+    logger.info(`Command registered with Telegraf: ${command.name}`);
+}
 
 // Logging setiap command yang dijalankan
 bot.use(async (ctx, next) => {
@@ -70,23 +58,73 @@ bot.use(async (ctx, next) => {
     await next();
 });
 
-// Handle tebakan angka untuk game /tebak
+// Handle callback queries (actions)
+bot.on('callback_query', async (ctx) => {
+    const callbackData = ctx.callbackQuery.data;
+    
+    // Cari action yang sesuai
+    const allActions = commandManager.getAllActions();
+    let handled = false;
+    
+    for (const [actionName, handler] of allActions) {
+        if (callbackData === actionName || callbackData.startsWith(actionName + '_')) {
+            try {
+                await handler(ctx);
+                handled = true;
+                break;
+            } catch (error) {
+                logger.error(`Error handling action ${actionName}: ${error.message}`);
+                await ctx.answerCbQuery('Terjadi kesalahan saat memproses aksi.');
+                handled = true;
+                break;
+            }
+        }
+    }
+    
+    if (!handled) {
+        await ctx.answerCbQuery('Aksi tidak ditemukan.');
+    }
+});
+
+// Handle text messages untuk session management
 bot.on("text", async (ctx, next) => {
     const userId = ctx.from.id;
     const messageText = ctx.message.text.trim();
-
-    // Cek apakah user sedang dalam sesi game tebak angka dan pesan adalah angka
-    if (tebakCommand.gameSession.has(userId) && !isNaN(parseInt(messageText)) && !messageText.startsWith("/")) {
-        // Panggil fungsi execute dari command tebak dengan argumen yang sesuai
-        // Kita perlu membuat ctx.message.text seolah-olah itu adalah command /tebak [angka]
-        ctx.message.text = `/tebak ${messageText}`;
-        await tebakCommand.execute(ctx);
-    } else {
-        await next(); // Lanjutkan ke middleware atau handler lain jika bukan tebakan angka
+    
+    // Skip jika ini adalah command
+    if (messageText.startsWith('/')) {
+        return await next();
+    }
+    
+    // Cari command yang memiliki session aktif
+    const commandsWithSession = commandManager.getCommandsWithActiveSession(userId);
+    let handled = false;
+    
+    for (const command of commandsWithSession) {
+        if (command.getHandlers) {
+            const handlers = command.getHandlers();
+            for (const [condition, handler] of handlers) {
+                try {
+                    const result = await handler(ctx);
+                    if (result === true) {
+                        handled = true;
+                        break;
+                    }
+                } catch (error) {
+                    logger.error(`Error handling text for command ${command.name}: ${error.message}`);
+                }
+            }
+            if (handled) break;
+        }
+    }
+    
+    if (!handled) {
+        await next();
     }
 });
 
 // Set bot commands (for /help and Telegram's command list)
+const commands = Array.from(commandManager.getAllCommands().values());
 bot.telegram.setMyCommands(
     commands.map((cmd) => ({
         command: cmd.name,
@@ -149,7 +187,7 @@ bot.catch((err, ctx) => {
 
 // Start bot
 bot.launch();
-logger.info("Bot started!");
+logger.info("Bot started with modular command system!");
 
 // Enable graceful stop
 process.once("SIGINT", () => bot.stop("SIGINT"));

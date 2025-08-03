@@ -1,0 +1,34 @@
+[3/8/2025, 05.25.03] [INFO] Command registered: addowner
+[3/8/2025, 05.25.03] [INFO] Command registered: addprem
+[3/8/2025, 05.25.03] [INFO] Command registered: ban
+[3/8/2025, 05.25.03] [INFO] Command registered: cekid
+[3/8/2025, 05.25.03] [INFO] Command registered: delowner
+[3/8/2025, 05.25.03] [INFO] Command registered: delprem
+[3/8/2025, 05.25.03] [INFO] Command registered: groupfeature
+[3/8/2025, 05.25.03] [INFO] Command registered: help
+[3/8/2025, 05.25.03] [INFO] Command registered: menu
+[3/8/2025, 05.25.03] [INFO] Command registered: premiumfeature
+[3/8/2025, 05.25.03] [INFO] Command registered: premiumfeature
+[3/8/2025, 05.25.03] [INFO] Command registered: setnamebot
+[3/8/2025, 05.25.03] [INFO] Command registered: setownername
+[3/8/2025, 05.25.03] [INFO] Command registered: setthumb
+[3/8/2025, 05.25.03] [INFO] Command registered: start
+[3/8/2025, 05.25.03] [INFO] Command registered: tebak
+[3/8/2025, 05.25.03] [INFO] Command registered: test
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: addowner
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: addprem
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: ban
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: cekid
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: delowner
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: delprem
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: groupfeature
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: help
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: menu
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: premiumfeature
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: setnamebot
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: setownername
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: setthumb
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: start
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: tebak
+[3/8/2025, 05.25.03] [INFO] Command registered with Telegraf: test
+[3/8/2025, 05.25.03] [INFO] Bot started with modular command system!

@@ -1,0 +1,134 @@
+{
+  "name": "telegraf",
+  "version": "4.16.3",
+  "description": "Modern Telegram Bot Framework",
+  "license": "MIT",
+  "author": "The Telegraf Contributors",
+  "homepage": "https://telegraf.js.org",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/telegraf/telegraf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/telegraf/telegraf/issues"
+  },
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./typings/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./filters": {
+      "types": "./filters.d.ts",
+      "default": "./filters.js"
+    },
+    "./future": {
+      "types": "./future.d.ts",
+      "default": "./future.js"
+    },
+    "./scenes": {
+      "types": "./scenes.d.ts",
+      "default": "./scenes.js"
+    },
+    "./types": {
+      "types": "./types.d.ts",
+      "default": "./types.js"
+    },
+    "./format": {
+      "types": "./format.d.ts",
+      "default": "./format.js"
+    },
+    "./utils": {
+      "types": "./utils.d.ts",
+      "default": "./utils.js"
+    },
+    "./markup": {
+      "types": "./markup.d.ts",
+      "default": "./markup.js"
+    },
+    "./session": {
+      "types": "./session.d.ts",
+      "default": "./session.js"
+    }
+  },
+  "files": [
+    "bin/*",
+    "src/**/*.ts",
+    "lib/**/*.js",
+    "typings/**/*.d.ts",
+    "typings/**/*.d.ts.map",
+    "types.*",
+    "format.*",
+    "filters.*",
+    "future.*",
+    "scenes.*",
+    "utils.*",
+    "markup.*",
+    "session.*"
+  ],
+  "bin": {
+    "telegraf": "lib/cli.mjs"
+  },
+  "scripts": {
+    "prepare": "npm run --silent build",
+    "build": "tsc && npm run expose",
+    "expose": "tsx build/expose.ts types scenes filters format future utils markup session",
+    "build:docs": "typedoc src/index.ts",
+    "pretest": "npm run build",
+    "test": "ava",
+    "lint": "eslint .",
+    "checks": "npm test && npm run lint",
+    "refresh": "npm run clean && npm ci",
+    "clean": "git clean -fX .eslintcache docs/build/ lib/ typings/"
+  },
+  "ava": {
+    "files": [
+      "test/*",
+      "!test/_*"
+    ]
+  },
+  "type": "commonjs",
+  "engines": {
+    "node": "^12.20.0 || >=14.13.1"
+  },
+  "types": "./typings/index.d.ts",
+  "dependencies": {
+    "@telegraf/types": "^7.1.0",
+    "abort-controller": "^3.0.0",
+    "debug": "^4.3.4",
+    "mri": "^1.2.0",
+    "node-fetch": "^2.7.0",
+    "p-timeout": "^4.1.0",
+    "safe-compare": "^1.1.4",
+    "sandwich-stream": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.8",
+    "@types/node": "^20.4.2",
+    "@types/node-fetch": "^2.6.2",
+    "@types/safe-compare": "^1.1.0",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
+    "ava": "^5.3.1",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-ava": "^14.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "fast-check": "^3.12.0",
+    "prettier": "^3.0.3",
+    "tsx": "^4.7.1",
+    "typedoc": "^0.25.0",
+    "typescript": "^5.2.2"
+  },
+  "keywords": [
+    "telegraf",
+    "telegram",
+    "telegram bot api",
+    "bot",
+    "botapi",
+    "bot framework"
+  ]
+}
