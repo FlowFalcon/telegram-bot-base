@@ -19,7 +19,7 @@ module.exports = async (ctx, next) => {
     }
     
     if (userId != config.ownerId && !owners.includes(userId) && !premiums.includes(userId)) {
-        return ctx.reply('[!] Perintah ini hanya bisa digunakan oleh user premium.');
+        return ctx.reply('Perintah ini hanya bisa digunakan oleh user premium.');
     }
     
     await next();

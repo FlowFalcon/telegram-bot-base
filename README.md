@@ -9,52 +9,49 @@ Bot Preview: [@flowfalcon_project_bot](https://t.me/flowfalcon_project_bot)
 ## Struktur Project
 
 ```
-telegram-bot-base/
-├── LICENSE                                 # lisensi repo ini
-├── README.md                               # dokumentasi ini
-├── bot.js                                  # fungsi menjalankan bot
-├── commands                                # isi command menggunakan kategori dari folder
-│   ├── admin                                   # kategori admin command
-│   │   └── ban.js
-│   ├── game                                    # kategori game command
-│   │   └── tebak.js
-│   ├── group
-│   │   └── groupfeature.js
-│   ├── help.js                                 # kategori main commands
-│   ├── helper                                  # kategori helepr command
-│   │   ├── cekid.js
-│   │   └── interactive_example.js
-│   ├── owner                                   # kategori owner command                                
-│   │   ├── addowner.js
-│   │   ├── addprem.js
-│   │   ├── backup.js
-│   │   ├── cmd.js
-│   │   ├── dailyrepot.js
-│   │   ├── debug.js
-│   │   ├── delowner.js
-│   │   ├── delprem.js
-│   │   ├── eval.js
-│   │   ├── exec.js
-│   │   ├── ownerfeature.js
-│   │   ├── restart.js
-│   │   ├── setnamebot.js
-│   │   ├── setownername.js
-│   │   └── setthumb.js
-│   ├── premium                                  # kategori premium command
-│   │   └── premiumfeature.js
-│   └── start.js                                 # kategori main command
-├── config.js
-├── data                                     # untuk menyimpan memori bot
-│   ├── botinfo.json
-│   ├── owners.json
-│   └── premiums.json
-├── middlewares                              # untuk membantu funsgi fitur khusus
-│   ├── groupOnly.js
-│   ├── ownerOnly.js
-│   └── premiumOnly.js
-├── package.json
-└── utils                                    # untuk memberikan log pada bot
-    └── logger.js
+tele-bot/
+├── bot.js                                  # Bot utama untuk menjalankan sistem
+├── mirror_bot.js                           # Bot khusus untuk sistem mirror
+├── config.js                               # Konfigurasi utama bot
+├── commands/                               # Direktori command berdasarkan kategori
+│   ├── admin/                             # Command untuk admin
+│   │   └── ban.js                        # Sistem banned user
+│   ├── game/                              # Fitur game & hiburan
+│   │   └── tebak.js                      # Game tebak-tebakan
+│   ├── group/                             # Fitur khusus grup
+│   │   └── groupfeature.js               # Manajemen grup
+│   ├── helper/                            # Command bantuan
+│   │   ├── cekid.js                      # Cek ID user/grup
+│   │   └── interactive_example.js         # Contoh interaksi
+│   ├── owner/                             # Command khusus owner
+│   │   ├── addowner.js                   # Tambah owner
+│   │   ├── addprem.js                    # Tambah user premium
+│   │   ├── backup.js                     # Backup data bot
+│   │   ├── mirror.js                     # Pengaturan mirror
+│   │   ├── dailyrepot.js                # Laporan harian
+│   │   └── [other owner commands]...     # Command owner lainnya
+│   ├── premium/                           # Fitur premium
+│   │   └── premiumfeature.js            # Fitur khusus premium
+│   ├── tools/                             # Utilitas tambahan
+│   │   ├── hdr.js                       # Handler media HD
+│   │   └── hdvid.js                     # Video HD handler
+│   ├── help.js                           # Command bantuan
+│   └── start.js                          # Command mulai
+├── data/                                  # Penyimpanan data bot
+│   ├── botinfo.json                      # Informasi bot
+│   ├── mirrors.json                      # Konfigurasi mirror
+│   ├── owners.json                       # Data owner
+│   ├── premiums.json                     # Data user premium
+│   └── warns.json                        # Data peringatan
+├── middlewares/                           # Middleware sistem
+│   ├── groupOnly.js                      # Pembatas grup
+│   ├── mirrorSecurity.js                 # Keamanan mirror
+│   ├── ownerOnly.js                      # Pembatas owner
+│   └── premiumOnly.js                    # Pembatas premium
+├── mirror_data/                           # Data untuk sistem mirror
+├── utils/                                 # Utilitas
+│   └── logger.js                         # Sistem logging
+└── package.json                           # Dependency & scripts
 
 ```
 
@@ -113,9 +110,23 @@ Berikut adalah ringkasan fungsionalitas utama yang disediakan oleh bot ini:
 *   **Pengategorian command otomatis** Sekarang Command mudah untuk di kategorikan dengan membuat sub-folder seperti: `commands/owner/exec.js` = fitur exec akan otomatis masuk ke kategori owner
 *   **Modular Command Handling:** Command dimuat secara dinamis dari folder `commands/`, memungkinkan penambahan dan pengelolaan command yang mudah. Setiap command dapat mendaftarkan handler-nya sendiri (command, action, text).
 *   **Middleware System:** Penggunaan middleware untuk validasi akses (grup, owner, premium) sebelum command dieksekusi.
-*   **Sistem Warn:** Menerapkan sistem warn (maksimal 3 warn sebelum user di-kick) untuk pelanggaran seperti pengiriman link.
 *   **Manajemen Data Lokal:** Menggunakan file JSON (`data/`) untuk menyimpan konfigurasi bot yang dinamis (nama bot, owner, thumbnail) serta daftar owner, premium, dan data warn.
 *   **Logging:** Mencatat aktivitas bot, termasuk setiap command yang dijalankan, ke konsol dan file log harian di folder `logs/`. dan membuat fitur `dailyreport` untuk manajemen penggunan bot hariannya
+
+
+## Telegram Bot dengan Sistem Mirror
+
+Bot Telegram ini mendukung sistem mirror, dan berbagai fitur canggih untuk administrasi grup dan pengelolaan konten.
+
+## Fitur Utama
+
+- 🔄 **Sistem Mirror**: Mendukung penyalinan pesan otomatis antar grup
+- 👥 **Manajemen Grup**: Fitur moderasi dan administrasi grup yang lengkap
+- 💎 **Sistem Premium**: Akses fitur khusus untuk pengguna premium
+- 🎮 **Mini Games**: Berbagai permainan interaktif untuk member
+- 🛡️ **Keamanan**: Sistem middleware untuk proteksi command dan konten
+- 📊 **Pelaporan**: Sistem daily report dan logging untuk monitoring
+
 
 ## Penjelasan Isi File dan Potongan Kode Penting
 
@@ -254,21 +265,23 @@ bot.use(async (ctx, next) => {
             second: '2-digit'
         });
         
-        const logMessage = [
-            `┌─ 📋 COMMAND EXECUTED ─────────────────────────────`,
-            `│ 🕒 Time: ${timestamp}`,
-            `│ ⚡ Command: ${commandName}`,
-            `│ 📝 Args: ${args.length > 0 ? args.join(' ') : 'None'}`,
-            `├─ 👤 USER INFO ─────────────────────────────────`,
-            `│ 📛 Name: ${userName}`,
-            `│ 🏷️  Handle: ${userHandle}`,
-            `│ 🆔 User ID: ${user.id}`,
-            `├─ 💬 CHAT INFO ─────────────────────────────────`,
-            `│ 📍 Type: ${chatType}`,
-            `│ 📋 Info: ${chatInfo}`,
-            `│ 🆔 Chat ID: ${chat.id}`,
-            `└─────────────────────────────────────────────────`
-        ].join('\n');
+       const logMessage = [
+                `=================================`,
+                `COMMAND EXECUTED`,
+                `Time: ${timestamp}`,
+                `Command: ${commandName}`,
+                `Args: ${args.length ? args.join(' ') : 'None'}`,
+                `USER INFO`,
+                `Name: ${userName}`,
+                `Handle: ${userHandle}`,
+                `User ID: ${user.id}`,
+                `CHAT INFO`,
+                `Type: ${chatType}`,
+                `Info: ${chatInfo}`,
+                `Chat ID: ${chat.id}`,
+                `=================================`,
+                ``
+            ].join('\n');
         
         logger.info(`\n${logMessage}`);
         

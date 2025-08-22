@@ -12,7 +12,7 @@ module.exports = async (ctx, next) => {
     }
     
     if (userId != config.ownerId && !owners.includes(userId)) {
-        return ctx.reply('[!] Perintah ini hanya bisa digunakan oleh owner bot.');
+        return ctx.reply('Perintah ini hanya bisa digunakan oleh owner bot.');
     }
     
     await next();

@@ -266,7 +266,7 @@ bot.use(async (ctx, next) => {
                 `CHAT INFO`,
                 `Type: ${chatType}`,
                 `Info: ${chatInfo}`,
-                `Chat ID: ${chat.id}`
+                `Chat ID: ${chat.id}`,
                 `=================================`,
                 ``
             ].join('\n');
